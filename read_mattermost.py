@@ -1,26 +1,61 @@
+import time
+import fileinput
+
+import RPi.GPIO as GPIO
+
 import re
 
 from mattermost_bot.bot import listen_to
 from mattermost_bot.bot import respond_to
 from mattermost_bot.bot import Bot
 
+
+R_PIN = 13
+G_PIN = 5
+B_PIN = 21
+RGB = [R_PIN, G_PIN, B_PIN]
+
+GPIO.setmode(GPIO.BCM)
+GPIO.setwarnings(False)
+
+GPIO.setup(R_PIN, GPIO.OUT)
+GPIO.setup(G_PIN, GPIO.OUT)
+GPIO.setup(B_PIN, GPIO.OUT)
+
+def light(rgb):
+    for this_pin, this_bit in enumerate(rgb):
+        if this_bit == '1':            
+            GPIO.output(RGB[this_pin], GPIO.HIGH)
+        else:
+            GPIO.output(RGB[this_pin], GPIO.LOW)
+
+
 @listen_to('Hey Blue')
 def hey_blue(message):
-    print '001'
+    light('001')
     message.reply('Blue is on')
 
-@respond_to('Give me (.*)')
-def give_me(message, something):
-        message.reply('Here is %s' % something)
+@listen_to('Hello Red')
+def hello_red(message):
+    light('100')
+    message.reply('Red is on')
+
+@listen_to('Hi Green')
+def hi_green(message):
+    light('010')
+    message.reply('Green is on')
 
 @respond_to('Give me (.*)')
 def give_me(message, something):
         message.reply('Here is %s' % something)
 
-@listen_to('*')
-def notify(message):
-    print '111'
+@respond_to('Give me (.*)')
+def give_me(message, something):
+        message.reply('Here is %s' % something)
 
+#@listen_to('*')
+#def notify(message):
+#    print '111'
 
 if __name__ == "__main__":
-    Bot().run()
+    Bot().run()    
