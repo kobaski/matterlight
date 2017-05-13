@@ -1,5 +1,4 @@
 import time
-import fileinput
 
 import RPi.GPIO as GPIO
 
@@ -29,6 +28,14 @@ def light(rgb):
         else:
             GPIO.output(RGB[this_pin], GPIO.LOW)
 
+def str2rgb(this_str):
+    ret = ''
+    for this_b in ''.join(format(ord(x), 'b') for x in this_str):
+        if len(ret) == 3:
+            yield ret
+            ret = ''
+        else:
+            ret += this_b
 
 @listen_to('Hey Blue')
 def hey_blue(message):
@@ -47,15 +54,18 @@ def hi_green(message):
 
 @respond_to('Give me (.*)')
 def give_me(message, something):
-        message.reply('Here is %s' % something)
-
-@respond_to('Give me (.*)')
-def give_me(message, something):
-        message.reply('Here is %s' % something)
+    kirakira(message+something)
+    message.reply('Here is %s' % something)
 
 #@listen_to('*')
-#def notify(message):
-#    print '111'
+def kirakira(message):
+    light('000')
+    for this_rgb in str2rgb(message):
+        print this_rgb
+        light(this_rgb)
+        time.sleep(0.1)
+    light('000')
+
 
 if __name__ == "__main__":
     Bot().run()    

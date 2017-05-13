@@ -14,16 +14,20 @@ GPIO.setwarnings(False)
 GPIO.setup(R_PIN, GPIO.OUT)
 GPIO.setup(G_PIN, GPIO.OUT)
 GPIO.setup(B_PIN, GPIO.OUT)
-
-for rgb in fileinput.input():
-    rgb = rgb.strip()
     
-    if len(rgb) != 3:
-        continue
-        
-    for this_pin, this_bit in enumerate(rgb):
-        if this_bit == '1':            
-            GPIO.output(RGB[this_pin], GPIO.HIGH)
-        else:
-            GPIO.output(RGB[this_pin], GPIO.LOW)
+import bot
+
+bot.kirakira('hello world!')
+
+#for rgb in fileinput.input():
+#    rgb = rgb.strip()
+#    
+#    if len(rgb) != 3:
+#        continue
+#        
+#    for this_pin, this_bit in enumerate(rgb):
+#        if this_bit == '1':            
+#            GPIO.output(RGB[this_pin], GPIO.HIGH)
+#        else:
+#            GPIO.output(RGB[this_pin], GPIO.LOW)
         
