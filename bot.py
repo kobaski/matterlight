@@ -57,10 +57,10 @@ def give_me(message, something):
     kirakira(message+something)
     message.reply('Here is %s' % something)
 
-#@listen_to('*')
-def kirakira(message):
+@listen_to('(.*)')
+def kirakira(message, everything):
     light('000')
-    for this_rgb in str2rgb(message):
+    for this_rgb in str2rgb(everything):
         print this_rgb
         light(this_rgb)
         time.sleep(0.1)
